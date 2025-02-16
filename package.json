@@ -1,0 +1,10 @@
+{
+  "name": "arisawahan-site",
+  "version": "1.0.0",
+  "description": "arisawahan site",
+  "scripts": {
+    "build": "echo 'No build step necessary'"
+  },
+  "author": "shirufi0963",
+  "license": "MIT"
+}
