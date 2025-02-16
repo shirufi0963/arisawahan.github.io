@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NEWS | 庭師自陣 有澤班</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+        body {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            color: #192c5e;
+            font-family: Arial, sans-serif;
+            background-color: #f2fbff;
+            line-height: 1.6;
+            margin: 20px;
+            overflow-x: hidden;
+        }
+
+     .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #9faed1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 30;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 1.5s ease-out, visibility 2s ease-out;
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-screen img {
+            width: 180px;
+            opacity: 0;
+            animation: fadeInZoom 1.2s ease-out forwards;
+        }
+
+        @keyframes fadeInZoom {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.15); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        .site-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .site-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .main-content {
+            display: none;
+        }
+      
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(250, 250, 253, 0.9);
+            padding: 10px;
+            z-index: 100;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .menu-toggle {
+            font-size: 35px; 
+            cursor: pointer; 
+            color: rgb(119, 160, 255); 
+            float: right;
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            z-index: 11;
+            transition: opacity 0.3s;
+        }
+
+        .menu-toggle.hide {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .fullscreen-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(250, 250, 253, 0.95);
+            color: rgb(0, 0, 0);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            z-index: 12;
+        }
+
+        .fullscreen-menu.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .fullscreen-menu a {
+            font-size: 32px;
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            margin: 20px 0;
+            transition: color 0.3s;
+        }
+        
+        .fullscreen-menu a:hover {
+            color: #00bcd4;
+        }
+
+        .menu-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 36px;
+            cursor: pointer;
+        }
+        
+        h1.news-header {
+            text-align: right;
+            padding: 15px 40px;
+            margin-right: 80px;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            h1.news-header {
+                margin-right: 60px;
+            }
+        }
+
+        .news-section {
+            padding: 80px 20px;
+            text-align: center;
+        }
+
+        .news-items {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 30px;
+        }
+
+        .news-card {
+            background-color: rgba(240, 248, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            transition: transform 0.3s, box-shadow 0.3s ease-in-out;
+        }
+
+        .news-card a {
+            display: block;
+            color: inherit;
+            text-decoration: none;
+        }
+
+        .news-card img {
+            width: 100%; 
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px 8px 0 0;
+        }
+
+        .news-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .news-card a:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .news-card h3 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .news-card p {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+            .news-card {
+                width: 100%;
+            }
+        }
+
+        footer {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            background-color: #0d162c;
+            color: #f2fbff;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer-menu {
+            background-color: #0d162c;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-menu a {
+            color: #f2fbff;
+            margin: 0 15px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-menu a:hover {
+            color: #00bcd4;
+        }
+  </style>
+</head>
+<body>
+    <div class="site-logo">
+        <a href="index.html">
+        <img src="logo.png" alt="Site Logo">
+        </a>
+    </div>
+
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    
+    <div class="fullscreen-menu" id="fullscreenMenu">
+        <div class="menu-close" onclick="closeMenu()">✕</div> 
+        <a href="index.html">HOME</a>
+        <a href="news.html">NEWS</a>
+        <a href="about.html">ABOUT</a>
+        <a href="goods.html">GOODS</a>
+    </div>
+
+    <div class="loading-screen" id="loadingScreen">
+        <img src="logo.png" alt="ローディングロゴ">
+    </div>
+
+    <h1 class="news-header">NEWS</h1>
+
+    <section class="news-section">
+        <div class="news-items">
+            <div class="news-card">
+                <a href="news2.html">
+                <img src="news2.jpg" alt="アルバム画像">
+                <div class="news-date">2025-02-14</div>
+                <h3>1st FULL ALBUM『FICTITIOUS』</h3>
+                <p>2025年4月1日(火) 発売決定！</p>
+                </a>
+            </div>
+
+            <div class="news-card">
+                <a href="news3.html">
+                <img src="news3.jpg" alt="サムネ画像">
+                <div class="news-date">2025-02-14</div>
+                <h3>新曲「creatio」<br>先行配信中</h3>
+                <p>主要ストリーミングサービスで配信中</p>
+                </a>
+            </div>
+
+            
+            <div class="news-card">
+                <a href="news1.html">
+                <img src="news1.jpg" alt="ライブ画像">
+                <div class="news-date">2025-01-01</div>
+                <h3>1st LIVE「WORLDSEND」開催決定！</h3>
+                <p>2025年3月1日(土) COアリーナにて</p>
+                </a>
+            </div>
+
+            <div class="news-card">
+                <a href="news4.html">
+                <img src="blog.jpg" alt="blog画像">
+                <div class="news-date">2024.12.2</div>
+                <h3>有澤班ハワイ旅行ってきたblog！</h3>
+                <div class="news-summary">有澤班OfficialYouTubeチャンネルにて！</div>
+                </a>
+            </div>
+            
+            <div class="news-card">
+                <a href="news5.html">
+                <img src="YouTube.jpg" alt="YouTube画像">
+                <div class="news-date">2024.11.11</div>
+                <h3>有澤班OfficialYouTubeチャンネル</h3>
+                <p>公式YouTubeチャンネルができました！</p>
+                </a>
+            </div>
+            
+            <div class="news-card">
+                <a href="news6.html">
+                <img src="top.jpg" alt="サイト画像">
+                <div class="news-date">2024.11.11</div>
+                <h3>サイトリニューアル</h3>
+                <p>庭師自陣 有澤班の公式サイトが新しくなりました！</p>
+                </a>
+            </div>
+        </div>
+      </section>
+
+    <footer class="footer-menu">
+        <a href="index.html">HOME</a>
+        <a href="news.html">NEWS</a>
+        <a href="about.html">ABOUT</a>
+        <a href="goods.html">GOODS</a><br>
+        &copy; 2025 庭師自陣 有澤班 Official Site
+    </footer>
+  </div>
+
+  <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            setTimeout(() => {
+                loadingScreen.classList.add('fade-out');
+                document.querySelector('.main-content').style.display = 'block';
+            }, 1200);
+        });
+        
+        function toggleMenu() {
+            document.getElementById('fullscreenMenu').classList.add('show');
+            document.getElementById('menuToggle').classList.add('hide');
+        }
+        
+        function closeMenu() {
+            const menu = document.getElementById('fullscreenMenu');
+            menu.classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('menuToggle').classList.remove('hide');
+            }, 500);
+        }
+        
+        window.addEventListener('scroll', () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+            fadeInElements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    element.classList.add('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

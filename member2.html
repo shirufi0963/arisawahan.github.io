@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ABOUT | 庭師自陣 有澤班</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+        body {
+            font-family: 'Kiwi Maru';
+            background-color: #c7a5cc;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+            line-height: 1.8;
+        }
+        .loading-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #9faed1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 30;
+            opacity: 1;
+            visibility: visible;
+            transition: opacity 1.5s ease-out, visibility 2s ease-out;
+        }
+
+        .loading-screen.fade-out {
+            opacity: 0;
+            visibility: hidden;
+        }
+        
+        .loading-screen img {
+            width: 180px;
+            opacity: 0;
+            animation: fadeInZoom 1.2s ease-out forwards;
+        }
+
+        @keyframes fadeInZoom {
+            0% { opacity: 0; transform: scale(0.5); }
+            50% { opacity: 1; transform: scale(1.15); }
+            100% { opacity: 1; transform: scale(1); }
+        }
+
+        @keyframes fadeOut {
+            0% { opacity: 1; }
+            100% { opacity: 0; visibility: hidden; }
+        }
+
+        .site-logo {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            width: 150px;
+            height: auto;
+            cursor: pointer;
+            z-index: 20;
+        }
+
+        .site-logo img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .main-content {
+            display: none;
+        }
+      
+        .navbar {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background-color: rgba(250, 250, 253, 0.9);
+            padding: 10px;
+            z-index: 100;
+        }
+
+        .navbar a {
+            color: white;
+            text-decoration: none;
+            margin: 0 20px;
+            font-size: 18px;
+            transition: color 0.3s;
+        }
+
+        .menu-toggle {
+            font-size: 35px; 
+            cursor: pointer; 
+            color: rgb(255, 255, 255); 
+            float: right;
+            position: fixed;
+            top: 25px;
+            right: 25px;
+            z-index: 11;
+            transition: opacity 0.3s;
+        }
+
+        .menu-toggle.hide {
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .fullscreen-menu {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(250, 250, 253, 0.95);
+            color: rgb(0, 0, 0);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.5s ease-in-out, visibility 0.5s ease-in-out;
+            z-index: 12;
+        }
+
+        .fullscreen-menu.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .fullscreen-menu a {
+            font-size: 32px;
+            font-weight: bold;
+            color: rgb(0, 0, 0);
+            text-decoration: none;
+            margin: 20px 0;
+            transition: color 0.3s;
+        }
+        
+        .fullscreen-menu a:hover {
+            color: #00bcd4;
+        }
+
+        .menu-close {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            font-size: 36px;
+            cursor: pointer;
+        }
+        
+        h1.about-header {
+            text-align: right;
+            padding: 15px 40px;
+            margin-right: 80px;
+            font-size: 1.2rem;
+        }
+
+        @media (max-width: 768px) {
+            h1.about-header {
+                margin-right: 60px;
+            }
+        }
+        .profile-section {
+            max-width: 800px;
+            margin: 60px auto;
+            padding: 50px 80px;
+            background: #f9f9fb;
+            border-radius: 15px;
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.1);
+            text-align: left;
+        }
+        .profile-title h1 {
+            font-size: 42px;
+            color: #c7a5cc;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .profile-title p {
+            font-size: 24px;
+            color: #c7a5cc;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        .profile-image {
+            display: block;
+            margin: 30px auto;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 4px solid #c7a5cc;
+        }
+        .profile-content h2 {
+            font-size: 24px;
+            color: #2c3e50;
+            border-bottom: 2px solid #c7a5cc;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+        }
+        .profile-content p {
+            font-size: 17px;
+            color: #4a4a4a;
+            line-height: 1.7;
+            margin: 8px 0;
+        }
+        .return-link {
+            margin-top: 40px;
+            text-align: center;
+        }
+        .return-link a {
+            padding: 12px 24px;
+            color: white;
+            background-color: #a884ae;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 5px;
+            text-decoration: none;
+            transition: background-color 0.3s;
+        }
+        .return-link a:hover {
+            background-color: #4a75a4;
+        }
+
+        footer {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 20px;
+            background-color: #0d162c;
+            color: #f2fbff;
+            text-align: center;
+            font-size: 14px;
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.8s, transform 0.8s;
+        }
+
+        .fade-in.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .footer-menu {
+            background-color: #0d162c;
+            padding: 20px 0;
+            text-align: center;
+        }
+
+        .footer-menu a {
+            color: #f2fbff;
+            margin: 0 15px;
+            font-size: 16px;
+            font-weight: bold;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-menu a:hover {
+            color: #00bcd4;
+        }
+  </style>
+</head>
+<body>
+    <div class="site-logo">
+        <a href="index.html">
+        <img src="logo.png" alt="Site Logo">
+        </a>
+    </div>
+
+    <div class="menu-toggle" onclick="toggleMenu()">☰</div>
+    
+    <div class="fullscreen-menu" id="fullscreenMenu">
+        <div class="menu-close" onclick="closeMenu()">✕</div> 
+        <a href="index.html">HOME</a>
+        <a href="news.html">NEWS</a>
+        <a href="about.html">ABOUT</a>
+        <a href="goods.html">GOODS</a>
+    </div>
+
+    <div class="loading-screen" id="loadingScreen">
+        <img src="logo.png" alt="ローディングロゴ">
+    </div>
+
+    <h1 class="about-header">ABOUT</h1>
+
+    <section class="profile-section">
+        <div class="profile-title">
+            <h1>松原 快斗</h1>
+            <img class="profile-image" src="member2.png" alt="松原 快斗">
+            <p style="font-style:italic;">「後悔させないから着いてきて！」</p>
+        </div>
+        <div class="profile-content">
+            <h2>基本情報</h2>
+            <p><strong>性別:</strong> 男</p>
+            <p><strong>職業:</strong> アイドル</p>
+            <p><strong>年齢:</strong> 30歳</p>
+            <p><strong>誕生日:</strong> 2月4日</p>
+            <p><strong>血液型:</strong> B型</p>
+            <p><strong>身長:</strong> 165cm</p>
+            
+            <h2>容姿</h2>
+            <p>明るく染めた茶髪で常にサングラスを付けている。</p>
+            <p>イヤーカフとピアスがチャームポイント。</p>
+            <p>メンバー内最年少で実際は165cmしかない.</p>
+            
+            <h2>性格</h2>
+            <p>誰にでもすぐに話しかけるコミュ力チャラ男。</p>
+            <p>メンバー内唯一の喫煙者でヘビースモーカー。しかしお酒に弱く、飲むと直ぐに酔っ払ってしまう。</p>
+            <p>またメンバー内で唯一女絡みの質問や好みのタイプに関してもオープンな人物でもある。</p>
+            <p>食へのこだわりが一切なく、食べられればなんでもいいとのこと。</p>
+            <p>メンバーへの距離感も近いが、蒼羽浩太郎とは不仲。</p>
+            <p>目的がないとやる気皆無だが、地頭がいいと噂されている。</p>
+            <p>クイズ番組やドラマにも出演している。</p>
+            
+            <h2>ファンからの愛称</h2>
+            <p>「松原」「かいと」</p>
+        </div>
+        <div class="return-link">
+            <a href="about.html">BACK TO MEMBER LIST</a>
+        </div>
+    </section>
+
+    <footer class="footer-menu">
+        <a href="index.html">HOME</a>
+        <a href="news.html">NEWS</a>
+        <a href="about.html">ABOUT</a>
+        <a href="goods.html">GOODS</a><br>
+        &copy; 2025 庭師自陣 有澤班 Official Site
+    </footer>
+  </div>
+
+  <script>
+        window.addEventListener('DOMContentLoaded', () => {
+            const loadingScreen = document.getElementById('loadingScreen');
+            setTimeout(() => {
+                loadingScreen.classList.add('fade-out');
+                document.querySelector('.main-content').style.display = 'block';
+            }, 1200);
+        });
+        
+        function toggleMenu() {
+            document.getElementById('fullscreenMenu').classList.add('show');
+            document.getElementById('menuToggle').classList.add('hide');
+        }
+        
+        function closeMenu() {
+            const menu = document.getElementById('fullscreenMenu');
+            menu.classList.remove('show');
+            setTimeout(() => {
+                document.getElementById('menuToggle').classList.remove('hide');
+            }, 500);
+        }
+        
+        window.addEventListener('scroll', () => {
+            const fadeInElements = document.querySelectorAll('.fade-in');
+            fadeInElements.forEach(element => {
+                const rect = element.getBoundingClientRect();
+                if (rect.top < window.innerHeight - 100) {
+                    element.classList.add('show');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
